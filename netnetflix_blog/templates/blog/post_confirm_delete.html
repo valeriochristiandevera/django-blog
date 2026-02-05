@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Post - Netflix Blog{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <h2 style="margin-bottom: 30px; color: #ffffff;">Delete Post</h2>
+
+    <p style="color: #e5e5e5; margin-bottom: 30px;">
+        Are you sure you want to delete the post "<strong>{{ post.title }}</strong>"? This action cannot be undone.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-primary" style="background-color: #E50914;">Yes, Delete</button>
+            <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

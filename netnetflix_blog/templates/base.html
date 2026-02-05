@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Netflix Blog{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/netflix.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="{% url 'blog:home' %}" class="navbar-brand">NETFLIX</a>
+
+            <ul class="nav-links">
+                <li><a href="{% url 'blog:home' %}">Home</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'blog:post_create' %}">Create Post</a></li>
+                    <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
+                    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                    <li><a href="{% url 'accounts:register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div style="padding: 100px 4% 20px; max-width: 1400px; margin: 0 auto;">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 40px; color: #808080; border-top: 1px solid #2a2a2a;">
+        <p>&copy; 2024 Netflix Blog. All rights reserved.</p>
+    </footer>
+</body>
+</html>
