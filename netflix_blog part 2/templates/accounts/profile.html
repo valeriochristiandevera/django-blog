@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Netflix Blog{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <h2 style="margin-bottom: 30px; color: #ffffff;">My Profile</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <p style="color: #E50914; font-size: 14px; margin-top: 5px;">{{ form.username.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <p style="color: #E50914; font-size: 14px; margin-top: 5px;">{{ form.email.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.bio.id_for_label }}">Bio</label>
+            {{ form.bio }}
+            {% if form.bio.errors %}
+                <p style="color: #E50914; font-size: 14px; margin-top: 5px;">{{ form.bio.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
+            {% if user.profile_picture %}
+                <div style="margin-bottom: 10px;">
+                    <img src="{{ user.profile_picture.url }}" alt="Profile" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+                </div>
+            {% endif %}
+            {{ form.profile_picture }}
+            {% if form.profile_picture.errors %}
+                <p style="color: #E50914; font-size: 14px; margin-top: 5px;">{{ form.profile_picture.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Update Profile</button>
+    </form>
+
+    <!-- User Posts -->
+    <div style="margin-top: 60px;">
+        <h3 style="color: #ffffff; margin-bottom: 20px;">My Posts ({{ user.posts.count }})</h3>
+        <div class="posts-grid">
+            {% for post in user.posts.all|slice:":4" %}
+            <div class="post-card">
+                {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="post-card-image">
+                {% else %}
+                    <div class="post-card-image" style="background-color: #3a3a3a;"></div>
+                {% endif %}
+
+                <div class="post-card-body">
+                    <a href="{% url 'blog:post_detail' post.slug %}" class="post-card-title">
+                        {{ post.title }}
+                    </a>
+
+                    <div class="post-card-meta">
+                        <span>{{ post.status|title }}</span>
+                        <span>{{ post.views }} views</span>
+                    </div>
+
+                    <p class="post-card-excerpt">{{ post.excerpt|truncatewords:15 }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <p style="color: #808080;">You haven't created any posts yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
