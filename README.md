@@ -1,6 +1,4 @@
 # django-blog
 
 
-Valerio, Christian D.
-,
-Quintana, Christine S.
+Christian D. Valerio , Christine S. Quintana
